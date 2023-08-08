@@ -1,7 +1,7 @@
 import gradio as gr
 import joblib
 # Load the trained model
-model = joblib.load("loan_classifier.joblib")
+model = joblib.load("/workspaces/LoanPredict/loan_classifier.joblib")
 scalar = joblib.load('std_scaler.bin')
 
 
