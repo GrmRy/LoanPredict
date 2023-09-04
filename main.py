@@ -9,4 +9,5 @@ model=joblib.load("/workspaces/LoanPredict/loan_classifier.joblib")
 app=FastAPI()
 
 class Input(BaseModel):
+    install:int
     
