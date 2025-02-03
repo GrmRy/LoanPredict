@@ -1,73 +1,46 @@
-import gradio as gr
+import streamlit as st
 import joblib
-# Load the trained model
-model = joblib.load("/workspaces/LoanPredict/loan_classifier.joblib")
-scalar = joblib.load('std_scaler.bin')
+import numpy as np
 
+# Load the trained model and scaler
+import pickle
 
-def predict_loan_status(
-    int_rate,
-    installment,
-    log_annual_inc,
-    dti,
-    fico,
-    revol_bal,
-    revol_util,
-    inq_last_6mths,
-    delinq_2yrs,
-    pub_rec,
-    installment_to_income_ratio,
-    credit_history,
-):
-    input_dict = {
-        "int.rate": int_rate,
-        "installment": installment,
-        "log.annual.inc": log_annual_inc,
-        "dti": dti,
-        "fico": fico,
-        "revol.bal": revol_bal,
-        "revol.util": revol_util,
-        "inq.last.6mths": inq_last_6mths,
-        "delinq.2yrs": delinq_2yrs,
-        "pub.rec": pub_rec,
-        "installment_to_income_ratio": installment_to_income_ratio,
-        "credit_history": credit_history,
-    }
-    # Convert the dictionary to a 2D array
-    input_array = [list(input_dict.values())]
-    scaled_array = scalar.transform(input_array)
-    prediction = model.predict(scaled_array)[0]
+with open("loan_classifier.pkl", "rb") as f:
+    model = pickle.load(f)
+scaler = joblib.load("std_scaler.bin")
 
-    if prediction == 0:
-        return "Loan fully paid"
-    else:
-        return "Loan not fully paid"
+def predict_loan_status(features):
+    """
+    Predicts loan status based on input features.
+    """
+    scaled_features = scaler.transform([features])
+    prediction = model.predict(scaled_features)[0]
+    return "Loan Fully Paid" if prediction == 1 else "Loan Not Fully Paid"
 
+# Streamlit UI
+st.title("Loan Prediction App")
+st.write("Fill in the details below to check loan status prediction.")
 
-inputs = [
-    gr.Slider(0.06, 0.23, step=0.01, label="Interest Rate"),
-    gr.Slider(100, 950, step=10, label="Installment"),
-    gr.Slider(7, 15, step=0.1, label="Log Annual Income"),
-    gr.Slider(0, 40, step=1, label="DTI Ratio"),
-    gr.Slider(600, 850, step=1, label="FICO Score"),
-    gr.Slider(0, 120000, step=1000, label="Revolving Balance"),
-    gr.Slider(0, 120, step=1, label="Revolving Utilization"),
-    gr.Slider(0, 10, step=1, label="Inquiries in Last 6 Months"),
-    gr.Slider(0, 20, step=1, label="Delinquencies in Last 2 Years"),
-    gr.Slider(0, 10, step=1, label="Public Records"),
-    gr.Slider(0, 5, step=0.1, label="Installment to Income Ratio"),
-    gr.Slider(0, 1, step=0.01, label="Credit History"),
-]
-outputs = [gr.Label(num_top_classes=2)]
+# Input fields
+int_rate = st.slider("Interest Rate (%)", 0.0, 30.0, 10.0)
+installment = st.number_input("Installment Amount", min_value=0.0, value=500.0)
+log_annual_inc = st.number_input("Log of Annual Income", min_value=0.0, value=10.0)
+dti = st.slider("Debt-to-Income Ratio", 0.0, 50.0, 15.0)
+fico = st.slider("FICO Score", 300, 850, 650)
+revol_bal = st.number_input("Revolving Balance", min_value=0.0, value=10000.0)
+revol_util = st.slider("Revolving Utilization (%)", 0.0, 100.0, 50.0)
+inq_last_6mths = st.slider("Inquiries in Last 6 Months", 0, 10, 2)
+delinq_2yrs = st.slider("Delinquencies in Last 2 Years", 0, 10, 0)
+pub_rec = st.slider("Public Records", 0, 5, 0)
+installment_to_income_ratio = st.number_input("Installment to Income Ratio", min_value=0.0, value=0.2)
+credit_history = st.number_input("Credit History Length (years)", min_value=0.0, value=5.0)
 
-title = "Loan Approval Prediction"
-description = (
-    "Enter the details of the loan applicant to check if the loan is approved or not."
-)
-gr.Interface(
-    fn=predict_loan_status,
-    inputs=inputs,
-    outputs=outputs,
-    title=title,
-    description=description,
-).launch()
+# Predict button
+if st.button("Predict Loan Status"):
+    features = [
+        int_rate, installment, log_annual_inc, dti, fico, revol_bal,
+        revol_util, inq_last_6mths, delinq_2yrs, pub_rec,
+        installment_to_income_ratio, credit_history
+    ]
+    result = predict_loan_status(features)
+    st.success(f"Prediction: {result}")
