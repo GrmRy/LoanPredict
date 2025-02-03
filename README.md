@@ -49,7 +49,7 @@ The model was trained with **scikit-learn**, and feature scaling was applied usi
 4. The result is displayed as **"Loan Fully Paid"** or **"Loan Not Fully Paid"**.
 
 ## Screenshots
-🚀 *[Add screenshots of your application here]*
+Check out the live app here: [Loan Prediction App](https://loanpredict-sbfbu7qqxasv8bbcd9rjey.streamlit.app/)
 
 ## Contribution
 Feel free to contribute to improving this project!
