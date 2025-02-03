@@ -1,6 +1,6 @@
 # Loan Prediction App
 
-This project is a **Loan Prediction App** that helps users predict whether a loan will be **fully paid** or **not fully paid** based on various financial factors. The application uses a trained machine learning model and is built using **Streamlit** for the front-end interface.
+This project is a **Loan Prediction App** that helps users predict whether a loan will be **fully paid** or **not fully paid** based on various financial factors. The application uses a trained machine learning model and is built using **Streamlit** for the front-end interface.Check out the live app here: [Loan Prediction App](https://loanpredict-sbfbu7qqxasv8bbcd9rjey.streamlit.app/)
 
 ## Features
 - Predicts loan repayment status based on user inputs
@@ -48,8 +48,6 @@ The model was trained with **scikit-learn**, and feature scaling was applied usi
 3. The model makes a prediction.
 4. The result is displayed as **"Loan Fully Paid"** or **"Loan Not Fully Paid"**.
 
-## Screenshots
-Check out the live app here: [Loan Prediction App](https://loanpredict-sbfbu7qqxasv8bbcd9rjey.streamlit.app/)
 
 ## Contribution
 Feel free to contribute to improving this project!
