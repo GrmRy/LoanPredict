@@ -55,7 +55,7 @@ if submit_button:
     scaled_array = scaler.transform(input_array)
     prediction = model.predict(scaled_array)[0]
     
-    if prediction == 1:
+    if prediction == 0:
         st.success("Prediction: Loan Fully Paid")
     else:
         st.error("Prediction: Loan Not Fully Paid")
