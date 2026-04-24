@@ -49,7 +49,7 @@ if submit_button:
     features = [
         int_rate, installment, log_annual_inc, dti, fico,
         revol_bal, revol_util, inq_last_6mths, delinq_2yrs,
-        pub_rec, installment_to_income_ratio, credit_history
+        pub_rec, credit_history, installment_to_income_ratio
     ]
     input_array = np.array([features])
     scaled_array = scaler.transform(input_array)
