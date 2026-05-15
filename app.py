@@ -404,6 +404,7 @@ if submitted:
     credit_history              = (delinq_2yrs + pub_rec) / max(fico, 1)
 
     # Feature order must match training
+    int_rate_decimal = int_rate / 100
     features = [
         int_rate, installment, log_annual_inc, dti, fico,
         revol_bal, revol_util, inq_last_6mths, delinq_2yrs,
